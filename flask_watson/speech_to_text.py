@@ -56,28 +56,17 @@ class SpeechToText(object):
     :param app: Flask app to initialize with. Defaults to `None`
     """
 
-    callback_url = None
-
     session = None
+
+    callback_url = None
 
     user_secret = None
 
-    def __init__(self, app=None, blueprint=None, session=None):
+    def __init__(self, app=None, session=None, blueprint=None):
         if app is not None:
-            self.init_app(app, blueprint, session)
+            self.init_app(app, session, blueprint)
 
-    def init_app(self, app, blueprint=None, session=None):
-
-        # Blueprint
-        if blueprint is None:
-            blueprint = Blueprint('watson', __name__)
-        blueprint.add_url_rule(
-            '/watson/speech-to-text',
-            'watson-speech-to-text',
-            self.handle_callback,
-            methods=['GET', 'POST'],
-        )
-        self.callback_url = '.'.join((blueprint.name, 'watson-speech-to-text'))
+    def init_app(self, app, session=None, blueprint=None):
 
         # Session
         if session is None:
@@ -89,6 +78,17 @@ class SpeechToText(object):
             logger.error('WATSON_SPEECHTOTEXT credentials not set')
             return
         self.session.auth = (username, password)
+
+        # Blueprint
+        if blueprint is None:
+            blueprint = Blueprint('watson', __name__)
+        blueprint.add_url_rule(
+            '/watson/speech-to-text',
+            'watson-speech-to-text',
+            self.handle_callback,
+            methods=['GET', 'POST'],
+        )
+        self.callback_url = '.'.join((blueprint.name, 'watson-speech-to-text'))
 
         # Secret
         user_secret = app.config.get('WATSON_SPEECHTOTEXT_USER_SECRET')
