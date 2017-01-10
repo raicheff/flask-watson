@@ -47,11 +47,11 @@ BASE_URL = 'https://stream.watsonplatform.net/speech-to-text/api/v1'
 
 class SpeechToText(object):
     """
-    Flask-Watson
+    Flask-Watson/SpeechToText
 
-    Refer to https://flask-watson.readthedocs.org for more details.
+    Refer to https://flask-watson.readthedocs.io/speech-to-text.html for more details.
 
-    https://www.ibm.com/watson/developercloud/speech-to-text.html
+    API: https://www.ibm.com/watson/developercloud/speech-to-text.html
 
     :param app: Flask app to initialize with. Defaults to `None`
     """
