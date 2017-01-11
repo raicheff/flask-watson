@@ -74,14 +74,14 @@ class SpeechToText(object):
         # Session
         if session is None:
             session = requests.Session()
-        session.headers.update({'X-Watson-Learning-Opt-Out': '1'})
-        self.session = session
         username = app.config.get('WATSON_SPEECHTOTEXT_USERNAME')
         password = app.config.get('WATSON_SPEECHTOTEXT_PASSWORD')
         if not (username and password):
             logger.error('WATSON_SPEECHTOTEXT credentials not set')
             return
-        self.session.auth = (username, password)
+        session.auth = (username, password)
+        session.headers.update({'X-Watson-Learning-Opt-Out': '1'})
+        self.session = session
 
         # Blueprint
         if blueprint is None:
