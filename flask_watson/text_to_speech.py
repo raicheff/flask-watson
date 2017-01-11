@@ -28,8 +28,8 @@ class TextToSpeech(object):
     def init_app(self, app, session=None):
         if session is None:
             session = requests.Session()
-        username = app.config['WATSON_TEXTTOSPEECH_USERNAME']
-        password = app.config['WATSON_TEXTTOSPEECH_PASSWORD']
+        username = app.config.get('WATSON_TEXTTOSPEECH_USERNAME')
+        password = app.config.get('WATSON_TEXTTOSPEECH_PASSWORD')
         if not (username and password):
             logger.error('WATSON_TEXTTOSPEECH credentials not set')
             return
