@@ -49,9 +49,12 @@ class SpeechToText(object):
     """
     Flask-Watson/SpeechToText
 
-    Refer to https://flask-watson.readthedocs.io/speech-to-text.html for more details.
+    Documentation:
+    https://flask-watson.readthedocs.io/speech-to-text.html
+    https://www.ibm.com/watson/developercloud/speech-to-text.html
 
-    API: https://www.ibm.com/watson/developercloud/speech-to-text.html
+    SDK:
+    https://github.com/watson-developer-cloud/python-sdk
 
     :param app: Flask app to initialize with. Defaults to `None`
     """
