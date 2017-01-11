@@ -66,11 +66,12 @@ class SpeechToText(object):
         if app is not None:
             self.init_app(app, session, blueprint)
 
-    def init_app(self, app, session=None, blueprint=None):
+    def init_app(self, app, session=None, blueprint=None, url_prefix=None):
 
         # Session
         if session is None:
             session = requests.Session()
+        session.headers.update({'X-Watson-Learning-Opt-Out': '1'})
         self.session = session
         username = app.config.get('WATSON_SPEECHTOTEXT_USERNAME')
         password = app.config.get('WATSON_SPEECHTOTEXT_PASSWORD')
@@ -81,7 +82,7 @@ class SpeechToText(object):
 
         # Blueprint
         if blueprint is None:
-            blueprint = Blueprint('watson', __name__)
+            blueprint = Blueprint('watson', __name__, url_prefix=url_prefix)
         blueprint.add_url_rule(
             '/watson/speech-to-text',
             'watson-speech-to-text',
