@@ -113,7 +113,7 @@ class SpeechToText(object):
         """
         http://www.ibm.com/watson/developercloud/speech-to-text/api/v1/#check_job
         """
-        response = self.session.get('{BASE_URL}/recognitions/{id}'.format(**locals()))
+        response = self.session.get(BASE_URL + '/recognitions/{id}'.format(id=id))
         response.raise_for_status()
         return response.json()
 
@@ -121,7 +121,7 @@ class SpeechToText(object):
         """
         http://www.ibm.com/watson/developercloud/speech-to-text/api/v1/#delete_job
         """
-        self.session.delete('{BASE_URL}/recognitions/{id}'.format(**locals())).raise_for_status()
+        self.session.delete(BASE_URL + '/recognitions/{id}'.format(id=id)).raise_for_status()
 
     def register_callback(self):
         """
