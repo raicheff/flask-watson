@@ -19,7 +19,6 @@ from flask import (
     Blueprint,
     Response,
     abort,
-    current_app,
     request,
     url_for,
 )
