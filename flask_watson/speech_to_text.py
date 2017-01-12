@@ -44,6 +44,8 @@ recognitions_failed = namespace.signal('recognitions.failed')
 
 BASE_URL = 'https://stream.watsonplatform.net/speech-to-text/api/v1'
 
+ENDPOINT = 'watson-speech-to-text'
+
 
 class SpeechToText(object):
     """
@@ -61,7 +63,7 @@ class SpeechToText(object):
 
     session = None
 
-    callback_url = None
+    blueprint = None
 
     user_secret = None
 
@@ -86,13 +88,8 @@ class SpeechToText(object):
         # Blueprint
         if blueprint is None:
             blueprint = Blueprint('watson', __name__, url_prefix=url_prefix)
-        blueprint.add_url_rule(
-            '/watson/speech-to-text',
-            'watson-speech-to-text',
-            self.handle_callback,
-            methods=['GET', 'POST'],
-        )
-        self.callback_url = '.'.join((blueprint.name, 'watson-speech-to-text'))
+        blueprint.add_url_rule('/watson/speech-to-text', ENDPOINT, self.handle_callback, methods=['GET', 'POST'])
+        self.blueprint = blueprint
 
         # Secret
         user_secret = app.config.get('WATSON_SPEECHTOTEXT_USER_SECRET')
@@ -107,7 +104,7 @@ class SpeechToText(object):
         """
         user_token = user_token or uuid.uuid4().hex
         headers = {'content-type': content_type}
-        params = {'callback_url': self.callback_url, 'user_token': user_token, **kwargs}
+        params = {'callback_url': self._callback_url, 'user_token': user_token, **kwargs}
         response = self.session.post(BASE_URL + '/recognitions', data=data, headers=headers, params=params)
         response.raise_for_status()
         return response.json()
@@ -116,7 +113,7 @@ class SpeechToText(object):
         """
         http://www.ibm.com/watson/developercloud/doc/speech-to-text/async.shtml#register
         """
-        params = {'callback_url': url_for(self.callback_url, _external=True), 'user_secret': self.user_secret}
+        params = {'callback_url': self._callback_url, 'user_secret': self.user_secret}
         response = self.session.post(BASE_URL + '/register_callback', params=params)
         response.raise_for_status()
         return response.json()
@@ -152,6 +149,10 @@ class SpeechToText(object):
         digest = hmac.new(self.user_secret.encode(), message, hashlib.sha1).digest()
         if not itsdangerous.constant_time_compare(base64.b64encode(digest), signature.encode()):
             abort(BAD_REQUEST)
+
+    @property
+    def _callback_url(self):
+        return url_for('.'.join((self.blueprint.name, ENDPOINT)), _external=True)
 
 
 # EOF
