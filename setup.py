@@ -11,7 +11,7 @@ from setuptools import setup
 
 setup(
     name='flask-watson',
-    version='0.1.0',
+    version='0.1.1',
     description='Flask-Watson',
     author='Boris Raicheff',
     author_email='b@raicheff.com',
