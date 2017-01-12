@@ -109,6 +109,20 @@ class SpeechToText(object):
         response.raise_for_status()
         return response.json()
 
+    def check_job(self, id):
+        """
+        http://www.ibm.com/watson/developercloud/speech-to-text/api/v1/#check_job
+        """
+        response = self.session.get('{BASE_URL}/recognitions/{id}'.format(**locals()))
+        response.raise_for_status()
+        return response.json()
+
+    def delete_job(self, id):
+        """
+        http://www.ibm.com/watson/developercloud/speech-to-text/api/v1/#delete_job
+        """
+        self.session.delete('{BASE_URL}/recognitions/{id}'.format(**locals())).raise_for_status()
+
     def register_callback(self):
         """
         http://www.ibm.com/watson/developercloud/doc/speech-to-text/async.shtml#register
@@ -136,10 +150,10 @@ class SpeechToText(object):
         notification = request.get_json(silent=True)
         if notification is None:
             abort(BAD_REQUEST)
-        event = notification.get('event')
+        event = notification.pop('event', None)
         if event is None:
             abort(BAD_REQUEST)
-        namespace.signal(event).send(current_app._get_current_object(), notification=notification)
+        namespace.signal(event).send(current_app._get_current_object(), **notification)
         return Response(status=OK)
 
     def _abort_for_signature(self, message):
