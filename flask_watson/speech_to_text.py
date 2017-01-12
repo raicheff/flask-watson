@@ -153,7 +153,7 @@ class SpeechToText(object):
         event = notification.pop('event', None)
         if event is None:
             abort(BAD_REQUEST)
-        namespace.signal(event).send(current_app._get_current_object(), **notification)
+        namespace.signal(event).send(self, **notification)
         return Response(status=OK)
 
     def _abort_for_signature(self, message):
