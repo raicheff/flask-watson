@@ -23,10 +23,7 @@ from flask import (
     url_for,
 )
 from flask.signals import Namespace
-from six.moves.http_client import (
-    BAD_REQUEST,
-    OK,
-)
+from six.moves.http_client import BAD_REQUEST, OK
 
 
 logger = logging.getLogger('Flask-Watson')
@@ -66,9 +63,9 @@ class SpeechToText(object):
 
     user_secret = None
 
-    def __init__(self, app=None, session=None, blueprint=None):
+    def __init__(self, app=None, session=None, blueprint=None, url_prefix=None):
         if app is not None:
-            self.init_app(app, session, blueprint)
+            self.init_app(app, session, blueprint, url_prefix)
 
     def init_app(self, app, session=None, blueprint=None, url_prefix=None):
 
