@@ -16,8 +16,8 @@ setup(
     author='Boris Raicheff',
     author_email='b@raicheff.com',
     url='https://github.com/raicheff/flask-watson',
-    install_requires=['flask', 'requests', 'six'],
-    packages=['flask_watson'],
+    install_requires=('flask', 'requests', 'six'),
+    packages=('flask_watson',),
 )
 
 
