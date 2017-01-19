@@ -15,13 +15,7 @@ import uuid
 import itsdangerous
 import requests
 
-from flask import (
-    Blueprint,
-    Response,
-    abort,
-    request,
-    url_for,
-)
+from flask import Response, abort, request, url_for
 from flask.signals import Namespace
 from six.moves.http_client import BAD_REQUEST, OK
 
@@ -45,16 +39,7 @@ ENDPOINT = 'watson-speech-to-text'
 
 class SpeechToText(object):
     """
-    Flask-Watson/SpeechToText
-
-    Documentation:
-    https://flask-watson.readthedocs.io/speech-to-text.html
     https://www.ibm.com/watson/developercloud/speech-to-text.html
-
-    SDK:
-    https://github.com/watson-developer-cloud/python-sdk
-
-    :param app: Flask app to initialize with. Defaults to `None`
     """
 
     session = None
@@ -63,15 +48,10 @@ class SpeechToText(object):
 
     user_secret = None
 
-    def __init__(self, app=None, session=None, blueprint=None, url_prefix=None):
-        if app is not None:
-            self.init_app(app, session, blueprint, url_prefix)
-
-    def init_app(self, app, session=None, blueprint=None, url_prefix=None):
+    def init_app(self, app, blueprint=None):
 
         # Session
-        if session is None:
-            session = requests.Session()
+        session = requests.Session()
         username = app.config.get('WATSON_SPEECHTOTEXT_USERNAME')
         password = app.config.get('WATSON_SPEECHTOTEXT_PASSWORD')
         if not (username and password):
@@ -82,8 +62,6 @@ class SpeechToText(object):
         self.session = session
 
         # Blueprint
-        if blueprint is None:
-            blueprint = Blueprint('watson', __name__, url_prefix=url_prefix)
         blueprint.add_url_rule('/watson/speech-to-text', ENDPOINT, self.handle_callback, methods=['GET', 'POST'])
         self.blueprint = blueprint
 

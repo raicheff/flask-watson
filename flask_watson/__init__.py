@@ -6,8 +6,7 @@
 #
 
 
-from .speech_to_text import SpeechToText
-from .text_to_speech import TextToSpeech
+from .extension import Watson
 
 
 __version__ = '0.1.0'

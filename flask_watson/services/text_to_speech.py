@@ -21,13 +21,8 @@ class TextToSpeech(object):
 
     url = 'https://stream.watsonplatform.net/text-to-speech/api/v1'
 
-    def __init__(self, app=None, session=None):
-        if app is not None:
-            self.init_app(app, session)
-
-    def init_app(self, app, session=None):
-        if session is None:
-            session = requests.Session()
+    def init_app(self, app):
+        session = requests.Session()
         username = app.config.get('WATSON_TEXTTOSPEECH_USERNAME')
         password = app.config.get('WATSON_TEXTTOSPEECH_PASSWORD')
         if not (username and password):
@@ -54,7 +49,9 @@ class TextToSpeech(object):
         return response.json()
 
     def get_token(self):
-        # http://www.ibm.com/watson/developercloud/doc/getting_started/gs-tokens.shtml
+        """
+        http://www.ibm.com/watson/developercloud/doc/getting_started/gs-tokens.shtml
+        """
         url = 'https://stream.watsonplatform.net/authorization/api/v1/token'
         params = {'url': 'https://stream.watsonplatform.net/text-to-speech/api'}
         response = self.session.get(url, params=params)
