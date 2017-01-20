@@ -81,7 +81,9 @@ class SpeechToText(object):
         params = {'callback_url': self._callback_url, 'user_token': user_token, **kwargs}
         response = self.session.post(BASE_URL + '/recognitions', data=data, headers=headers, params=params)
         response.raise_for_status()
-        return response.json(), user_token
+        job = {'user_token': user_token}
+        job.update(response.json())
+        return job
 
     def check_job(self, id):
         """
