@@ -29,7 +29,11 @@ class TextToSpeech(object):
             logger.error('WATSON_TEXTTOSPEECH credentials not set')
             return
         session.auth = (username, password)
-        session.headers.update({'X-Watson-Learning-Opt-Out': '1'})
+        headers = {
+            'User-Agent': 'Flask-Watson/0.1.0 (https://github.com/raicheff/flask-watson)',
+            'X-Watson-Learning-Opt-Out': '1',
+        }
+        session.headers.update(headers)
         self.session = session
 
     def synthesize(self, text, **kwargs):
@@ -44,7 +48,8 @@ class TextToSpeech(object):
         """
         http://www.ibm.com/watson/developercloud/text-to-speech/api/v1/#get_voices
         """
-        response = self.session.get(self.url + '/voices')
+        headers = {'Accept': 'application/json'}
+        response = self.session.get(self.url + '/voices', headers=headers)
         response.raise_for_status()
         return response.json()
 

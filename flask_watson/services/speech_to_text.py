@@ -58,7 +58,11 @@ class SpeechToText(object):
             logger.error('WATSON_SPEECHTOTEXT credentials not set')
             return
         session.auth = (username, password)
-        session.headers.update({'X-Watson-Learning-Opt-Out': '1'})
+        headers = {
+            'User-Agent': 'Flask-Watson/0.1.0 (https://github.com/raicheff/flask-watson)',
+            'X-Watson-Learning-Opt-Out': '1',
+        }
+        session.headers.update(headers)
         self.session = session
 
         # Blueprint
