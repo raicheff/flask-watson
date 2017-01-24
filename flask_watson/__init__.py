@@ -9,7 +9,4 @@
 from .extension import Watson
 
 
-__version__ = '0.1.0'
-
-
 # EOF
