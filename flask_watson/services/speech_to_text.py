@@ -66,7 +66,7 @@ class SpeechToText(object):
         self.session = session
 
         # Blueprint
-        blueprint.add_url_rule('/watson/speech-to-text', ENDPOINT, self.handle_callback, methods=['GET', 'POST'])
+        blueprint.add_url_rule('/watson/speech-to-text', ENDPOINT, self.handle_callback, methods=('GET', 'POST'))
         self.blueprint = blueprint
 
         # Secret
